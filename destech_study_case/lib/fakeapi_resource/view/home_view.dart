@@ -4,7 +4,7 @@ import 'package:destech_study_case/product/constant/k_items.dart';
 import 'package:destech_study_case/product/cubit/fake_api_cubit.dart';
 import 'package:destech_study_case/product/service/fakeapi_service.dart';
 import 'package:destech_study_case/product/service/project_network_manager.dart';
-import 'package:destech_study_case/product/utility/utility_network_image.dart';
+import 'package:destech_study_case/product/widget/body_list_card_widget.dart';
 import 'package:destech_study_case/product/widget/loading_center_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,14 +38,8 @@ class _HomeViewState extends HomeViewModel {
       builder: (context, state) {
         return ListView.builder(
             itemCount: state.books?.length ?? kZero.toInt(),
-            itemBuilder: (BuildContext context, int index) {
-              final _book = state.books?[index];
-              if(_book == null) return SizedBox.shrink();
-              return ListTile(
-                title: UtilityNetworkImage.network(src: _book.image),
-                subtitle: Text('${_book.description}'),
-              );
-            });
+            itemBuilder: (BuildContext context, int index) =>
+                BodyListCardWidget(model: state.books?[index]));
       },
     );
   }
@@ -57,7 +51,7 @@ class _HomeViewState extends HomeViewModel {
       },
       builder: (context, state) {
         return AnimatedOpacity(
-            opacity: state ? 1 : 0,
+            opacity: state ? kOne : kZero,
             duration: DurationItems.durationHigh(),
             child: LoadingCenter());
       },

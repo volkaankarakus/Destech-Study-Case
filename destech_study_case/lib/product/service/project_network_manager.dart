@@ -5,7 +5,7 @@ class ProjectNetworkManager{
   late final Dio _dio;
 
   ProjectNetworkManager._(){
-    _dio = Dio(BaseOptions(baseUrl: 'https://fakerapi.it/api/'));
+    _dio = Dio(BaseOptions(baseUrl: 'https://fakerapi.it/'));
   }
 
   static ProjectNetworkManager manager = ProjectNetworkManager._();
