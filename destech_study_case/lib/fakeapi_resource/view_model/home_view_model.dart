@@ -1,7 +1,7 @@
 import 'package:destech_study_case/fakeapi_resource/model/book_model.dart';
-import 'package:destech_study_case/fakeapi_resource/service/fakeapi_service.dart';
-import 'package:destech_study_case/fakeapi_resource/service/project_network_manager.dart';
 import 'package:destech_study_case/fakeapi_resource/view/home_view.dart';
+import 'package:destech_study_case/product/service/fakeapi_service.dart';
+import 'package:destech_study_case/product/service/project_network_manager.dart';
 import 'package:flutter/material.dart';
 //https://fakerapi.it/api/v1/books?_quantity=100
 
