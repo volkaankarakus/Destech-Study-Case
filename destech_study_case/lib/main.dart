@@ -1,4 +1,5 @@
 import 'package:destech_study_case/fakeapi_resource/view/home_view.dart';
+import 'package:destech_study_case/fakeapi_resource/view/lottie_loading_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,6 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
+
+      //theme: context.watch<ThemeNotifier>().currentTheme,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

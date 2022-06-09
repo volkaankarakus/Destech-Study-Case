@@ -20,15 +20,15 @@ class BookModel {
 
 @JsonSerializable(createToJson: false)
 class Data {
-  int? id;
-  String? title;
-  String? author;
-  String? genre;
-  String? description;
-  String? isbn;
-  String? image;
-  String? published;
-  String? publisher;
+  final int? id; // final for just read and show,these are not updatable variables
+  final String? title;
+  final String? author;
+  final String? genre;
+  final String? description;
+  final String? isbn;
+  final String? image;
+  final String? published;
+  final String? publisher;
 
   Data(
       {this.id,

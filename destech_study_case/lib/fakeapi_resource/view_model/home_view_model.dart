@@ -1,11 +1,11 @@
 import 'package:destech_study_case/fakeapi_resource/model/book_model.dart';
 import 'package:destech_study_case/fakeapi_resource/service/fakeapi_service.dart';
+import 'package:destech_study_case/fakeapi_resource/service/project_network_manager.dart';
 import 'package:destech_study_case/fakeapi_resource/view/home_view.dart';
-import 'package:destech_study_case/product/mixin/product_dio_mixin.dart';
 import 'package:flutter/material.dart';
 //https://fakerapi.it/api/v1/books?_quantity=100
 
-abstract class HomeViewModel extends State<HomeView> with ProjectDioMixin{
+abstract class HomeViewModel extends State<HomeView> {
   late final IFakeApiService fakeApiService;
   bool isLoading = false;
   List<Data> books = [];
@@ -13,7 +13,7 @@ abstract class HomeViewModel extends State<HomeView> with ProjectDioMixin{
   @override
   void initState() {
     super.initState();
-    fakeApiService = FakeApiService(service);
+    fakeApiService = FakeApiService(ProjectNetworkManager.manager.service);
     _fetch();
   }
 
