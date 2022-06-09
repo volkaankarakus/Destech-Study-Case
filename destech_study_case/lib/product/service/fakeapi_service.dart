@@ -29,4 +29,3 @@ class FakeApiService extends IFakeApiService{
   }
 }
 
-enum _FakeApiPath{resource}
