@@ -1,3 +1,4 @@
+import 'package:destech_study_case/fakeapi_resource/view/favorite_books_view.dart';
 import 'package:destech_study_case/fakeapi_resource/view_model/cubit/fake_api_cubit.dart';
 import 'package:destech_study_case/fakeapi_resource/view_model/home_view_model.dart';
 import 'package:destech_study_case/product/constant/duration_items.dart';
@@ -26,6 +27,22 @@ class _HomeViewState extends HomeViewModel {
         appBar: AppBar(
           title: isLoading ? CircularProgressIndicator() : null,
           leading: _loadingCenterBloc(),
+          actions: [
+            BlocConsumer<FakeApiCubit, FakeApiState>(
+              listener: (context, state) {
+                if(state.isClickedToFavList ?? false){
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => FavoriteBooksView()));
+                }
+              },
+              builder: (context, state) {
+                return IconButton(
+                    onPressed: () {
+                      context.read<FakeApiCubit>().changeIsClickedToFavList();
+                    },
+                    icon: Icon(Icons.favorite_border));
+              },
+            )
+          ],
         ),
         body: _bodyListViewBloc(),
 
@@ -34,7 +51,7 @@ class _HomeViewState extends HomeViewModel {
   }
 
   Widget _bodyListViewBloc() {
-    return BlocBuilder<FakeApiCubit,FakeApiState>(
+    return BlocBuilder<FakeApiCubit, FakeApiState>(
       builder: (context, state) {
         return ListView.builder(
             itemCount: state.books?.length ?? kZero.toInt(),

@@ -21,11 +21,22 @@ class FakeApiCubit extends Cubit<FakeApiState> {
     changeLoading();
   }
 
+  // void searchByAuthor(String data){
+  //   final result = books.where((element) =>
+  //       element.author.contains(data)).toList();
+  //   emit(state.copyWith(books: result));
+  // }
+
   void changeLoading(){
     emit(state.copyWith(isLoading: !(state.isLoading ?? false) ));
   }
 
+  void changeIsLiked(){
+    emit(state.copyWith(isLiked: !(state.isLiked ?? false) ));
+  }
 
-
+  void changeIsClickedToFavList(){
+    emit(state.copyWith(isClickedToFavList: !(state.isClickedToFavList ?? false) ));
+  }
 
 }
