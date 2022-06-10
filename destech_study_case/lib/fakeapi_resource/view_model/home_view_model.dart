@@ -1,3 +1,7 @@
+//////////////////////////////////////////////////////////////
+// *** THIS SCRIPT IS USELESS AFTER ADDING CUBITS ************
+//////////////////////////////////////////////////////////////
+
 import 'package:destech_study_case/fakeapi_resource/model/book_model.dart';
 import 'package:destech_study_case/fakeapi_resource/view/home_view.dart';
 import 'package:destech_study_case/product/service/fakeapi_service.dart';

@@ -12,6 +12,7 @@ class FakeApiCubit extends Cubit<FakeApiState> {
   }
   final IFakeApiService fakeApiService;
   List<Data> books = [];
+  List<Data> favBooks = [];
 
   Future<void> fetch() async{
     changeLoading();
@@ -23,4 +24,8 @@ class FakeApiCubit extends Cubit<FakeApiState> {
   void changeLoading(){
     emit(state.copyWith(isLoading: !(state.isLoading ?? false) ));
   }
+
+
+
+
 }

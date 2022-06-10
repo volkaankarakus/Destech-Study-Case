@@ -1,7 +1,7 @@
+import 'package:destech_study_case/fakeapi_resource/view_model/cubit/fake_api_cubit.dart';
 import 'package:destech_study_case/fakeapi_resource/view_model/home_view_model.dart';
 import 'package:destech_study_case/product/constant/duration_items.dart';
 import 'package:destech_study_case/product/constant/k_items.dart';
-import 'package:destech_study_case/product/cubit/fake_api_cubit.dart';
 import 'package:destech_study_case/product/service/fakeapi_service.dart';
 import 'package:destech_study_case/product/service/project_network_manager.dart';
 import 'package:destech_study_case/product/widget/body_list_card_widget.dart';
