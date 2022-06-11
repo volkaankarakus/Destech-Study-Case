@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:destech_study_case/fakeapi_resource/model/book_model.dart';
 import 'package:destech_study_case/product/service/fakeapi_service.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 part 'fake_api_state.dart';
 
@@ -21,11 +20,18 @@ class FakeApiCubit extends Cubit<FakeApiState> {
     changeLoading();
   }
 
-  // void searchByAuthor(String data){
-  //   final result = books.where((element) =>
-  //       element.author.contains(data)).toList();
-  //   emit(state.copyWith(books: result));
-  // }
+  void searchByTitle(String data){
+    final result = books.where((element) =>
+        (element).title!.contains(data)).toList();
+    emit(state.copyWith(books: result));
+  }
+
+  void isTappedOrNot(bool data){
+    emit(state.copyWith(isTapped: data));
+  }
+
+
+
 
   void changeLoading(){
     emit(state.copyWith(isLoading: !(state.isLoading ?? false) ));
@@ -33,6 +39,10 @@ class FakeApiCubit extends Cubit<FakeApiState> {
 
   void changeIsLiked(){
     emit(state.copyWith(isLiked: !(state.isLiked ?? false) ));
+  }
+
+  void changeIsTapped(){
+    emit(state.copyWith(isTapped: !(state.isTapped ?? false) ));
   }
 
   void changeIsClickedToFavList(){

@@ -11,42 +11,77 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({Key? key,this.title}) : super(key: key);
+  final String? title;
 
   @override
   State<HomeView> createState() => _HomeViewState();
 }
 
 class _HomeViewState extends HomeViewModel {
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
           FakeApiCubit(FakeApiService(ProjectNetworkManager.manager.service)),
-      child: Scaffold(
-        appBar: AppBar(
-          title: isLoading ? CircularProgressIndicator() : null,
-          leading: _loadingCenterBloc(),
-          actions: [
-            BlocConsumer<FakeApiCubit, FakeApiState>(
-              listener: (context, state) {
-                if(state.isClickedToFavList ?? false){
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => FavoriteBooksView()));
-                }
-              },
-              builder: (context, state) {
-                return IconButton(
-                    onPressed: () {
-                      context.read<FakeApiCubit>().changeIsClickedToFavList();
+      child: BlocBuilder<FakeApiCubit,FakeApiState>(
+        builder: (context, state) {
+          return Scaffold(
+              appBar: AppBar(
+                leading: _loadingCenterBloc(),
+                actions: [
+                  BlocConsumer<FakeApiCubit, FakeApiState>(
+                    listener: (context, state) {
+                      if (state.isClickedToFavList ?? false) {
+                        Navigator.of(context).pushNamed('/favoriteBooksView');
+                      }
                     },
-                    icon: Icon(Icons.favorite_border));
-              },
-            )
-          ],
-        ),
-        body: _bodyListViewBloc(),
+                    builder: (context, state) {
+                      return IconButton(
+                          onPressed: () {
+                            context.read<FakeApiCubit>()
+                                .changeIsClickedToFavList();
+                          },
+                          icon: Icon(Icons.favorite_border));
+                    },
+                  )
+                ],
+              ),
+              body: Column(
+                children: [
+                  TextField(
+                    textCapitalization: TextCapitalization.none, //default lowercase
+                    onChanged: (value) {
+                      context.read<FakeApiCubit>().searchByTitle(value);
+                    },
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder()
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Here is the books!'),
+                      InkWell(
+                          onTap: (){
+                            // context.read()<FakeApiCubit>().fetch();
+                          },
+                          child: Text('See all'))
+                    ],
+                  ),
 
+                  Expanded(
+                    child: SafeArea(
+                      child: _bodyListViewBloc(),
+                    ),
+                  ),
+                ],
+              ));
+        },
       ),
+
     );
   }
 
@@ -56,7 +91,12 @@ class _HomeViewState extends HomeViewModel {
         return ListView.builder(
             itemCount: state.books?.length ?? kZero.toInt(),
             itemBuilder: (BuildContext context, int index) =>
-                BodyListCardWidget(model: state.books?[index]));
+                BodyListCardWidget(
+                  model: state.books?[index],
+                  isTapped: (state.isTapped ?? false),
+                  isLiked : (state.isLiked ?? false)
+                ),
+        );
       },
     );
   }
