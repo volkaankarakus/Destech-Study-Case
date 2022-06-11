@@ -26,24 +26,20 @@ class FakeApiCubit extends Cubit<FakeApiState> {
     emit(state.copyWith(books: result));
   }
 
-  void isTappedOrNot(bool data){
-    emit(state.copyWith(isTapped: data));
-  }
-
-
-
-
   void changeLoading(){
     emit(state.copyWith(isLoading: !(state.isLoading ?? false) ));
   }
 
-  void changeIsLiked(){
-    emit(state.copyWith(isLiked: !(state.isLiked ?? false) ));
-  }
 
   void changeIsTapped(){
     emit(state.copyWith(isTapped: !(state.isTapped ?? false) ));
   }
+
+  void changeLikeButton(bool newValue){
+    emit(state.copyWith(isLiked: newValue));
+  }
+
+
 
   void changeIsClickedToFavList(){
     emit(state.copyWith(isClickedToFavList: !(state.isClickedToFavList ?? false) ));

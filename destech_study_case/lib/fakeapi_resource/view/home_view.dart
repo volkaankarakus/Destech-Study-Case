@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key,this.title}) : super(key: key);
+  const HomeView({Key? key, this.title}) : super(key: key);
   final String? title;
 
   @override
@@ -22,36 +22,45 @@ class _HomeViewState extends HomeViewModel {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          FakeApiCubit(FakeApiService(ProjectNetworkManager.manager.service)),
-      child: BlocBuilder<FakeApiCubit,FakeApiState>(
-        builder: (context, state) {
-          return Scaffold(
-              appBar: AppBar(
-                leading: _loadingCenterBloc(),
-                actions: [
-                  BlocConsumer<FakeApiCubit, FakeApiState>(
-                    listener: (context, state) {
-                      if (state.isClickedToFavList ?? false) {
-                        Navigator.of(context).pushNamed('/favoriteBooksView');
-                      }
-                    },
-                    builder: (context, state) {
-                      return IconButton(
-                          onPressed: () {
-                            context.read<FakeApiCubit>()
-                                .changeIsClickedToFavList();
-                          },
-                          icon: Icon(Icons.favorite_border));
-                    },
-                  )
-                ],
-              ),
-              body: Column(
+    return BlocBuilder<FakeApiCubit, FakeApiState>(
+      builder: (context, state) {
+        return Scaffold(
+            appBar: AppBar(
+              leading: _loadingCenterBloc(),
+              actions: [
+                BlocConsumer<FakeApiCubit, FakeApiState>(
+                  listener: (context, state) {
+                    if (state.isClickedToFavList ?? false) {
+                      Navigator.of(context).pushNamed('/favoriteBooksView');
+                    }
+                  },
+                  builder: (context, state) {
+                    return IconButton(
+                        onPressed: () {
+                          context.read<FakeApiCubit>()
+                              .changeIsClickedToFavList();
+                        },
+                        icon: Icon(Icons.favorite_border));
+                  },
+                )
+              ],
+            ),
+            body: BlocListener<FakeApiCubit, FakeApiState>(
+              listener: (context, state) {
+                final notificationSnackBar = SnackBar(
+                    duration: Duration(seconds: 1),
+                    backgroundColor: Colors.red,
+                    content: Text(
+                        'isTapped : ' + state.isTapped.toString()
+                    + ', isLiked : ' + state.isLiked.toString())
+                );
+                ScaffoldMessenger.of(context).showSnackBar(notificationSnackBar);
+              },
+              child: Column(
                 children: [
                   TextField(
-                    textCapitalization: TextCapitalization.none, //default lowercase
+                    textCapitalization: TextCapitalization.none,
+                    //default lowercase
                     onChanged: (value) {
                       context.read<FakeApiCubit>().searchByTitle(value);
                     },
@@ -65,7 +74,7 @@ class _HomeViewState extends HomeViewModel {
                     children: [
                       Text('Here is the books!'),
                       InkWell(
-                          onTap: (){
+                          onTap: () {
                             // context.read()<FakeApiCubit>().fetch();
                           },
                           child: Text('See all'))
@@ -78,10 +87,9 @@ class _HomeViewState extends HomeViewModel {
                     ),
                   ),
                 ],
-              ));
-        },
-      ),
-
+              ),
+            ));
+      },
     );
   }
 
@@ -89,13 +97,13 @@ class _HomeViewState extends HomeViewModel {
     return BlocBuilder<FakeApiCubit, FakeApiState>(
       builder: (context, state) {
         return ListView.builder(
-            itemCount: state.books?.length ?? kZero.toInt(),
-            itemBuilder: (BuildContext context, int index) =>
-                BodyListCardWidget(
-                  model: state.books?[index],
-                  isTapped: (state.isTapped ?? false),
-                  isLiked : (state.isLiked ?? false)
-                ),
+          itemCount: state.books?.length ?? kZero.toInt(),
+          itemBuilder: (BuildContext context, int index) =>
+              BodyListCardWidget(
+                model: state.books?[index],
+                isLiked: state.isLiked ?? false,
+                isTapped: state.isTapped ?? false,
+              ),
         );
       },
     );

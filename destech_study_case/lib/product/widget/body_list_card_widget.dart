@@ -1,6 +1,8 @@
 import 'package:destech_study_case/fakeapi_resource/model/book_model.dart';
+import 'package:destech_study_case/fakeapi_resource/view_model/cubit/fake_api_cubit.dart';
 import 'package:destech_study_case/product/constant/duration_items.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../utility/utility_network_image.dart';
 import 'package:like_button/like_button.dart';
 
@@ -27,9 +29,7 @@ class _BodyListCardWidgetState extends State<BodyListCardWidget> {
     if (widget.model == null) return SizedBox.shrink();
     return InkWell(
           onTap: () {
-            setState((){
-              widget.isTapped = !(widget.isTapped);
-            });
+            context.read<FakeApiCubit>().changeIsTapped();
           },
           child: ListTile(
             leading: Container(
@@ -45,29 +45,12 @@ class _BodyListCardWidgetState extends State<BodyListCardWidget> {
                 isLiked : widget.isLiked,
                 animationDuration: DurationItems.durationNormal(),
                 onTap:(isLiked) async{
-                  widget.isLiked = !isLiked;
+                  context.read<FakeApiCubit>().changeLikeButton(!isLiked);
                  return !isLiked;
                 },
               ),
             ),
           ),
         );
-
-
-    // return Padding(
-    //   padding: PaddingItems.all(),
-    //   child: Card(
-    //     child: ListTile(
-    //       title: UtilityNetworkImage.network(src: model?.image),
-    //       subtitle: Text('${model?.description}'),
-    //       leading: TextButton(
-    //           onPressed: (){
-    //
-    //           },
-    //       child: Icon(Icons.add),),
-    //       ), ,
-    //     ),
-    //   ),
-    // );
   }
 }

@@ -26,9 +26,9 @@ class FakeApiState extends Equatable {
       books :books ?? this.books,
       favBooks: favBooks ?? this.favBooks,
       isLoading : isLoading ?? this.isLoading,
-      isLiked: isLiked ?? this.isLiked,
-      isClickedToFavList: isClickedToFavList ?? this.isClickedToFavList,
-      isTapped: isTapped ?? this.isTapped,
+      isLiked: isLiked ?? false,
+      isClickedToFavList: isClickedToFavList ?? false,
+      isTapped: isTapped ?? false,
     );
   }
 }

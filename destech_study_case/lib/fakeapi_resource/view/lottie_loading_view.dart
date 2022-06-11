@@ -1,5 +1,6 @@
 import 'package:destech_study_case/product/constant/duration_items.dart';
 import 'package:destech_study_case/product/constant/lottie_items.dart';
+import 'package:destech_study_case/product/router/app_router.dart';
 import 'package:destech_study_case/product/theme/theme_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -20,6 +21,12 @@ class _LottieLoadingViewState extends State<LottieLoadingView> with TickerProvid
     super.initState();
     controller = AnimationController(
         vsync: this, duration: DurationItems.durationNormal());
+    navigateToHome();
+  }
+
+  Future<void> navigateToHome()async{
+    await Future.delayed(Duration(seconds: 3));
+    Navigator.of(context).pushReplacementNamed(AppRouterEnums.home.withParaf);
   }
 
   @override
