@@ -2,12 +2,14 @@ import 'package:destech_study_case/fakeapi_resource/view_model/cubit/fake_api_cu
 import 'package:destech_study_case/fakeapi_resource/view_model/home_view_model.dart';
 import 'package:destech_study_case/product/constant/duration_items.dart';
 import 'package:destech_study_case/product/constant/k_items.dart';
+import 'package:destech_study_case/product/constant/lottie_items.dart';
 import 'package:destech_study_case/product/router/app_router.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'package:destech_study_case/product/widget/body_list_card_widget.dart';
 import 'package:destech_study_case/product/widget/loading_center_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -16,7 +18,16 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends HomeViewModel {
+class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
+  late AnimationController controller;
+  bool isLight = true;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+        vsync: this, duration: DurationItems.durationXHigh());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,36 +35,45 @@ class _HomeViewState extends HomeViewModel {
       builder: (context, state) {
         return Scaffold(
             appBar: AppBar(
+              centerTitle: true,
+              title: Text('Destech',style: GoogleFonts.oleoScript().copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 30
+              )),
               leading: _loadingCenterBloc(),
               actions: [
-                BlocConsumer<FakeApiCubit, FakeApiState>(
-                  listener: (context, state) {
-                    if (state.isClickedToFavList ?? false) {
-                      Navigator.of(context).pushNamed(
-                          AppRouterEnums.favoriteBook.withParaf);
-                    }
+                InkWell(
+                  onTap: () async {
+                    await controller.animateTo(isLight ? 0.5 : 1);
+                    isLight = !isLight;
+                    Future.microtask(() {
+                      //context.read<ThemeNotifier>().changeTheme();
+                    });
                   },
-                  builder: (context, state) {
-                    return IconButton(
-                        onPressed: () {
-                          context.read<FakeApiCubit>()
-                              .changeIsClickedToFavList();
-                        },
-                        icon: Icon(Icons.favorite_border));
-                  },
-                )
+                  child: Lottie.asset(
+                    LottieItems.themeChange.lottiePath,
+                    repeat: false,
+                    controller: controller,
+                  ),
+                ),
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(AppRouterEnums.favoriteBook.withParaf);
+                    },
+                    icon: Icon(Icons.favorite_border)),
               ],
             ),
-            body: BlocListener<FakeApiCubit,FakeApiState>(
+            body: BlocListener<FakeApiCubit, FakeApiState>(
               listener: (context, state) {
                 final notificationSnackBar = SnackBar(
                     duration: Duration(seconds: 1),
                     backgroundColor: Colors.red,
-                    content: Text(
-                        'isTapped : ' + state.isTapped.toString()
-                            + ', isLiked : ' + state.isLiked.toString())
-                );
-                ScaffoldMessenger.of(context).showSnackBar(notificationSnackBar);
+                    content:
+                        Text('isLiked : ' + state.isLiked.toString() + ''));
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(notificationSnackBar);
               },
               child: Column(
                 children: [
@@ -65,16 +85,13 @@ class _HomeViewState extends HomeViewModel {
                     },
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder()
-                    ),
+                        border: OutlineInputBorder()),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Here is the books!'),
-                      InkWell(
-                          onTap: () {},
-                          child: Text('See all'))
+                      InkWell(onTap: () {}, child: Text('See all'))
                     ],
                   ),
                   Expanded(
@@ -94,19 +111,15 @@ class _HomeViewState extends HomeViewModel {
       builder: (context, state) {
         return ListView.builder(
           itemCount: state.books?.length ?? kZero.toInt(),
-          itemBuilder: (BuildContext context, int index) =>
-              Column(
-                children: [
-                  Card(
-                    child: BodyListCardWidget(
-                      model: state.books?[index],
-                      // isTapped: state.isTapped ?? false,
-                    ),
-                  ),
-                  IconButton(onPressed: () {},
-                      icon: Icon(Icons.add))
-                ],
+          itemBuilder: (BuildContext context, int index) => Column(
+            children: [
+              Card(
+                child: BodyListCardWidget(
+                  model: state.books?[index],
+                ),
               ),
+            ],
+          ),
         );
       },
     );

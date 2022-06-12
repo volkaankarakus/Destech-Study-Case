@@ -24,18 +24,11 @@ class _BodyListCardWidgetState extends State<BodyListCardWidget> {
   @override
   Widget build(BuildContext context) {
     if (widget.model == null) return SizedBox.shrink();
-    return BlocConsumer<FakeApiCubit,FakeApiState>(
-      listener: (context, state) {
-        if(state.isTapped ?? false){
-          Navigator.of(context).pushNamed(
-              AppRouterEnums.detailBook.withParaf);
-        }
-      },
-      builder: (context, state) {
         return InkWell(
           onTap: () {
-            context.read<FakeApiCubit>().clickIsTapped();
-          },
+            Navigator.of(context).pushNamed(
+                AppRouterEnums.detailBook.withParaf,
+            );          },
           child: ListTile(
             leading: Container(
                 width: 80,
@@ -58,7 +51,7 @@ class _BodyListCardWidgetState extends State<BodyListCardWidget> {
             ),
           ),
         );
-      },
-    );
+
+
   }
 }

@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:destech_study_case/fakeapi_resource/model/book_model.dart';
 import 'package:destech_study_case/product/service/fakeapi_service.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 part 'fake_api_state.dart';
 
@@ -31,16 +32,9 @@ class FakeApiCubit extends Cubit<FakeApiState> {
   }
 
 
-  void clickIsTapped(){
-    emit(state.copyWith(isTapped: true ));
-  }
 
   void changeLikeButton(bool newValue){
     emit(state.copyWith(isLiked: (newValue ?? false) ));
-  }
-
-  void changeIsClickedToFavList(){
-    emit(state.copyWith(isClickedToFavList: !(state.isClickedToFavList ?? false) ));
   }
 
 }

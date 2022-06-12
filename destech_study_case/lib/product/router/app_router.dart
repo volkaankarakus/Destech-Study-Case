@@ -3,6 +3,7 @@ import 'package:destech_study_case/fakeapi_resource/view/favorite_books_view.dar
 import 'package:destech_study_case/fakeapi_resource/view/home_view.dart';
 import 'package:destech_study_case/fakeapi_resource/view/lottie_loading_view.dart';
 import 'package:destech_study_case/fakeapi_resource/view_model/cubit/fake_api_cubit.dart';
+import 'package:destech_study_case/fakeapi_resource/view_model/cubit/theme_cubit.dart';
 import 'package:destech_study_case/product/service/fakeapi_service.dart';
 import 'package:destech_study_case/product/service/project_network_manager.dart';
 import 'package:flutter/material.dart';
@@ -15,17 +16,23 @@ extension ApprouterEnumsExtension on AppRouterEnums {
 }
 
 class AppRouter {
-  final FakeApiCubit _fakeApiCubit = FakeApiCubit(
+  final FakeApiCubit fakeApiCubit = FakeApiCubit(
       FakeApiService(ProjectNetworkManager.manager.service));
 
   static const paraf = "/";
 
   Route<dynamic> _navigateToWidget(Widget child){
     return MaterialPageRoute(builder: (_) =>
-        BlocProvider.value(
-          value: _fakeApiCubit,
+        MultiBlocProvider(
+          providers: [
+            BlocProvider.value(
+                value: fakeApiCubit,),
+            BlocProvider<ThemeCubit>(
+                create: (context) => ThemeCubit())
+          ],
           child: child,
-        ));
+          ),
+        );
   }
 
   Route<dynamic> onGenerateRoute(RouteSettings routeSettings) {
@@ -47,14 +54,13 @@ class AppRouter {
           return _navigateToWidget(DetailBookView());
         case AppRouterEnums.favoriteBook:
           return _navigateToWidget(FavoriteBooksView());
+
         default :
         return MaterialPageRoute(builder: (_) => Scaffold(body: Container()));
-
       }
-
   }
 
   void dispose(){
-    _fakeApiCubit.close();
+    fakeApiCubit.close();
   }
 }
