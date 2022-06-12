@@ -1,18 +1,16 @@
-import 'package:destech_study_case/fakeapi_resource/view/favorite_books_view.dart';
 import 'package:destech_study_case/fakeapi_resource/view_model/cubit/fake_api_cubit.dart';
 import 'package:destech_study_case/fakeapi_resource/view_model/home_view_model.dart';
 import 'package:destech_study_case/product/constant/duration_items.dart';
 import 'package:destech_study_case/product/constant/k_items.dart';
-import 'package:destech_study_case/product/service/fakeapi_service.dart';
-import 'package:destech_study_case/product/service/project_network_manager.dart';
+import 'package:destech_study_case/product/router/app_router.dart';
+
 import 'package:destech_study_case/product/widget/body_list_card_widget.dart';
 import 'package:destech_study_case/product/widget/loading_center_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key, this.title}) : super(key: key);
-  final String? title;
+  const HomeView({Key? key}) : super(key: key);
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -31,7 +29,8 @@ class _HomeViewState extends HomeViewModel {
                 BlocConsumer<FakeApiCubit, FakeApiState>(
                   listener: (context, state) {
                     if (state.isClickedToFavList ?? false) {
-                      Navigator.of(context).pushNamed('/favoriteBooksView');
+                      Navigator.of(context).pushNamed(
+                          AppRouterEnums.favoriteBook.withParaf);
                     }
                   },
                   builder: (context, state) {
@@ -45,14 +44,14 @@ class _HomeViewState extends HomeViewModel {
                 )
               ],
             ),
-            body: BlocListener<FakeApiCubit, FakeApiState>(
+            body: BlocListener<FakeApiCubit,FakeApiState>(
               listener: (context, state) {
                 final notificationSnackBar = SnackBar(
                     duration: Duration(seconds: 1),
                     backgroundColor: Colors.red,
                     content: Text(
                         'isTapped : ' + state.isTapped.toString()
-                    + ', isLiked : ' + state.isLiked.toString())
+                            + ', isLiked : ' + state.isLiked.toString())
                 );
                 ScaffoldMessenger.of(context).showSnackBar(notificationSnackBar);
               },
@@ -74,13 +73,10 @@ class _HomeViewState extends HomeViewModel {
                     children: [
                       Text('Here is the books!'),
                       InkWell(
-                          onTap: () {
-                            // context.read()<FakeApiCubit>().fetch();
-                          },
+                          onTap: () {},
                           child: Text('See all'))
                     ],
                   ),
-
                   Expanded(
                     child: SafeArea(
                       child: _bodyListViewBloc(),
@@ -99,10 +95,17 @@ class _HomeViewState extends HomeViewModel {
         return ListView.builder(
           itemCount: state.books?.length ?? kZero.toInt(),
           itemBuilder: (BuildContext context, int index) =>
-              BodyListCardWidget(
-                model: state.books?[index],
-                isLiked: state.isLiked ?? false,
-                isTapped: state.isTapped ?? false,
+              Column(
+                children: [
+                  Card(
+                    child: BodyListCardWidget(
+                      model: state.books?[index],
+                      // isTapped: state.isTapped ?? false,
+                    ),
+                  ),
+                  IconButton(onPressed: () {},
+                      icon: Icon(Icons.add))
+                ],
               ),
         );
       },

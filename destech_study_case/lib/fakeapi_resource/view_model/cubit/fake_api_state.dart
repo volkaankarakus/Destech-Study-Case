@@ -1,16 +1,17 @@
 part of 'fake_api_cubit.dart';
 
 class FakeApiState extends Equatable {
-  FakeApiState({this.books,this.isLoading,this.favBooks,this.isLiked,this.isClickedToFavList,this.isTapped});
+  FakeApiState({this.books,this.isUpdated = false,this.isLoading,this.favBooks,this.isLiked,this.isClickedToFavList,this.isTapped});
   final List<Data>? books;
   final List<Data>? favBooks;
   final bool? isLiked;
   final bool? isTapped;
   final bool? isLoading;
   final bool? isClickedToFavList;
+  final bool isUpdated; // its for equatable solving in lists
 
   @override
-  List<Object?> get props => [books,isLoading,favBooks,isLiked,isClickedToFavList,isTapped]; // don't trigger the page unless these values change
+  List<Object?> get props => [books,isLoading,favBooks,isLiked,isClickedToFavList,isTapped,isUpdated]; // don't trigger the page unless these values change
 
 
   //copyWith to update
@@ -20,7 +21,8 @@ class FakeApiState extends Equatable {
     bool? isLoading,
     bool? isLiked,
     bool? isTapped,
-    bool? isClickedToFavList
+    bool? isClickedToFavList,
+    bool? isUpdated
   }){
     return FakeApiState(
       books :books ?? this.books,
@@ -29,6 +31,7 @@ class FakeApiState extends Equatable {
       isLiked: isLiked ?? false,
       isClickedToFavList: isClickedToFavList ?? false,
       isTapped: isTapped ?? false,
+      isUpdated: isUpdated ?? this.isUpdated
     );
   }
 }

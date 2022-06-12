@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'book_model.g.dart';
 
@@ -19,9 +20,9 @@ class BookModel {
 }
 
 @JsonSerializable(createToJson: false)
-class Data {
-  final int? id; // final for just read and show,these are not updatable variables
-  final String? title;
+class Data with EquatableMixin{
+  int? id;
+  final String? title; // final for just read and show,these are not updatable variables
   final String? author;
   final String? genre;
   final String? description;
@@ -44,4 +45,7 @@ class Data {
   factory Data.fromJson(Map<String, dynamic> json) {
     return _$DataFromJson(json);
   }
+
+  @override
+  List<Object?> get props => [id];
 }

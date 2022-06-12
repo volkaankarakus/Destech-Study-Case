@@ -31,15 +31,13 @@ class FakeApiCubit extends Cubit<FakeApiState> {
   }
 
 
-  void changeIsTapped(){
-    emit(state.copyWith(isTapped: !(state.isTapped ?? false) ));
+  void clickIsTapped(){
+    emit(state.copyWith(isTapped: true ));
   }
 
   void changeLikeButton(bool newValue){
-    emit(state.copyWith(isLiked: newValue));
+    emit(state.copyWith(isLiked: (newValue ?? false) ));
   }
-
-
 
   void changeIsClickedToFavList(){
     emit(state.copyWith(isClickedToFavList: !(state.isClickedToFavList ?? false) ));
