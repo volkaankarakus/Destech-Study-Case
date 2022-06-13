@@ -21,6 +21,11 @@ class FakeApiCubit extends Cubit<FakeApiState> {
     changeLoading();
   }
 
+  void getAll(){
+    final seeAll = books;
+    emit(state.copyWith(books: seeAll));
+  }
+
   void searchByTitle(String data){
     final result = books.where((element) =>
         (element).title!.contains(data)).toList();

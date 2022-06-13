@@ -11,6 +11,7 @@ class ThemeState extends Equatable{
   List<Object?> get props => [currentTheme,isLightTheme];
 
 
+
   ThemeState copyWith({
   ThemeData? currentTheme,
   bool? isLightTheme

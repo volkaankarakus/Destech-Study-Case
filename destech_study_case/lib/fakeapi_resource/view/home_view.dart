@@ -106,7 +106,9 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                             style: TextStyle(fontSize: 15, height: 3),
                           ),
                         ),
-                        InkWell(onTap: () {}, child: Text('See all')),
+                        InkWell(onTap: () {
+                          context.read<FakeApiCubit>().getAll();
+                        }, child: Text('See all')),
                         SizedBox.shrink()
                       ],
                     ),
