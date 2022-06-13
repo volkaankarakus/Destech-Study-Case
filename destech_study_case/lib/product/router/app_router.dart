@@ -48,10 +48,13 @@ class AppRouter {
       switch(_routes){
         case AppRouterEnums.init:
           return _navigateToWidget(LottieLoadingView());
+
         case AppRouterEnums.home:
           return _navigateToWidget(HomeView());
+
         case AppRouterEnums.detailBook:
           return _navigateToWidget(DetailBookView());
+
         case AppRouterEnums.favoriteBook:
           return _navigateToWidget(FavoriteBooksView());
 

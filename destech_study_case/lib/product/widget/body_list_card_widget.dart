@@ -10,7 +10,7 @@ import 'package:like_button/like_button.dart';
 
 class BodyListCardWidget extends StatefulWidget {
   BodyListCardWidget({Key? key,
-    this.model,}) : super(key: key);
+    required this.model,}) : super(key: key);
 
   final Data? model;
 
@@ -24,12 +24,7 @@ class _BodyListCardWidgetState extends State<BodyListCardWidget> {
   @override
   Widget build(BuildContext context) {
     if (widget.model == null) return SizedBox.shrink();
-        return InkWell(
-          onTap: () {
-            Navigator.of(context).pushNamed(
-                AppRouterEnums.detailBook.withParaf,
-            );          },
-          child: ListTile(
+        return ListTile(
             leading: Container(
                 width: 80,
                 height: 80,
@@ -61,9 +56,6 @@ class _BodyListCardWidgetState extends State<BodyListCardWidget> {
                 },
               ),
             ),
-          ),
-        );
-
-
+          );
   }
 }

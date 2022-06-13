@@ -14,7 +14,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
+  HomeView({Key? key}) : super(key: key);
+
+
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -23,6 +25,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
   late AnimationController controller;
   bool isLight = true;
+
 
   @override
   void initState() {
@@ -38,11 +41,11 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
         return Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: Text('Destech',style: GoogleFonts.oleoScript().copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 30
-              )),
+              title: Text('Destech',
+                  style: GoogleFonts.oleoScript().copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 30)),
               leading: _loadingCenterBloc(),
               actions: [
                 InkWell(
@@ -64,7 +67,10 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                       Navigator.of(context)
                           .pushNamed(AppRouterEnums.favoriteBook.withParaf);
                     },
-                    icon: Icon(Icons.favorite_border,size: 32,)),
+                    icon: Icon(
+                      Icons.favorite_border,
+                      size: 32,
+                    )),
               ],
             ),
             body: BlocListener<FakeApiCubit, FakeApiState>(
@@ -83,7 +89,6 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                       children: [
                         SizedBox(
                           height: 40,
@@ -98,10 +103,7 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                                 hintText: 'Search with title',
                                 prefixIcon: Icon(Icons.search),
                                 border: OutlineInputBorder()),
-                            style: TextStyle(
-                              fontSize: 15,
-                              height: 3
-                            ),
+                            style: TextStyle(fontSize: 15, height: 3),
                           ),
                         ),
                         InkWell(onTap: () {}, child: Text('See all')),
@@ -110,7 +112,7 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                     ),
                     Expanded(
                       child: SafeArea(
-                        child: _bodyListViewBloc(),
+                        child: bodyListViewBloc(),
                       ),
                     ),
                   ],
@@ -121,18 +123,25 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
     );
   }
 
-  Widget _bodyListViewBloc() {
+  Widget bodyListViewBloc() {
     return BlocBuilder<FakeApiCubit, FakeApiState>(
-      builder: (context, state) {
+      builder: (context,state) {
         return ListView.builder(
           itemCount: state.books?.length ?? kZero.toInt(),
           itemBuilder: (BuildContext context, int index) => Column(
             children: [
               Padding(
                 padding: PaddingItems.bottomNormal(),
-                child: Card(
-                  child: BodyListCardWidget(
-                    model: state.books?[index],
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                        AppRouterEnums.detailBook.withParaf,
+                        );
+                  },
+                  child: Card(
+                    child: BodyListCardWidget(
+                      model: state.books?[index],
+                    ),
                   ),
                 ),
               ),
