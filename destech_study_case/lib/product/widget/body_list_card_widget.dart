@@ -35,7 +35,19 @@ class _BodyListCardWidgetState extends State<BodyListCardWidget> {
                 height: 80,
                 child: UtilityNetworkImage.network(src: widget.model?.image)),
             title: Text('${widget.model?.title}'),
-            subtitle: Text('${widget.model?.description}'),
+            subtitle: Column(
+              children: [
+                Text('${widget.model?.author}'),
+                Text('${widget.model?.genre}'),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text('${widget.model?.published}'),
+                  ],
+                ),
+
+              ],
+            ),
             trailing: Container(
               width: 40,
               child: LikeButton(

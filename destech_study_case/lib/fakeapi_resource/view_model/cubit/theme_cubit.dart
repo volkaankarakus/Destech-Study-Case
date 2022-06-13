@@ -4,17 +4,16 @@ import 'package:flutter/material.dart';
 
 part 'theme_state.dart';
 
-class ThemeCubit extends Cubit<ThemeState>{
+class ThemeCubit extends Cubit<ThemeState> {
   ThemeCubit() : super(ThemeState());
 
-  void changeTheme(){
+  void changeTheme() {
     emit(state.copyWith(isLightTheme: !(state.isLightTheme ?? false)));
   }
 
-  ThemeData? curTheme(){
-    final result =  (state.currentTheme == (state.isLightTheme) ? ThemeData.light() : ThemeData.dark());
-    emit(state.copyWith(currentTheme: result ?? ThemeData.light()));
+  ThemeData? curTheme() {
+      emit(state.copyWith(
+          currentTheme: !state.isLightTheme ? ThemeData.light() : ThemeData.dark()));
+
   }
-
-
 }

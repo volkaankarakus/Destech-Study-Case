@@ -1,8 +1,10 @@
 import 'package:destech_study_case/fakeapi_resource/view_model/cubit/fake_api_cubit.dart';
+import 'package:destech_study_case/fakeapi_resource/view_model/cubit/theme_cubit.dart';
 import 'package:destech_study_case/fakeapi_resource/view_model/home_view_model.dart';
 import 'package:destech_study_case/product/constant/duration_items.dart';
 import 'package:destech_study_case/product/constant/k_items.dart';
 import 'package:destech_study_case/product/constant/lottie_items.dart';
+import 'package:destech_study_case/product/constant/padding_items.dart';
 import 'package:destech_study_case/product/router/app_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:destech_study_case/product/widget/body_list_card_widget.dart';
@@ -48,7 +50,7 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                     await controller.animateTo(isLight ? 0.5 : 1);
                     isLight = !isLight;
                     Future.microtask(() {
-                      //context.read<ThemeNotifier>().changeTheme();
+                      context.read<ThemeCubit>().changeTheme();
                     });
                   },
                   child: Lottie.asset(
@@ -62,7 +64,7 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                       Navigator.of(context)
                           .pushNamed(AppRouterEnums.favoriteBook.withParaf);
                     },
-                    icon: Icon(Icons.favorite_border)),
+                    icon: Icon(Icons.favorite_border,size: 32,)),
               ],
             ),
             body: BlocListener<FakeApiCubit, FakeApiState>(
@@ -75,31 +77,44 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(notificationSnackBar);
               },
-              child: Column(
-                children: [
-                  TextField(
-                    textCapitalization: TextCapitalization.none,
-                    //default lowercase
-                    onChanged: (value) {
-                      context.read<FakeApiCubit>().searchByTitle(value);
-                    },
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder()),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Here is the books!'),
-                      InkWell(onTap: () {}, child: Text('See all'))
-                    ],
-                  ),
-                  Expanded(
-                    child: SafeArea(
-                      child: _bodyListViewBloc(),
+              child: Padding(
+                padding: PaddingItems.horizontalNormal(),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 250,
+                          child: TextField(
+                            textCapitalization: TextCapitalization.none,
+                            //default lowercase
+                            onChanged: (value) {
+                              context.read<FakeApiCubit>().searchByTitle(value);
+                            },
+                            decoration: InputDecoration(
+                                hintText: 'Search with title',
+                                prefixIcon: Icon(Icons.search),
+                                border: OutlineInputBorder()),
+                            style: TextStyle(
+                              fontSize: 15,
+                              height: 3
+                            ),
+                          ),
+                        ),
+                        InkWell(onTap: () {}, child: Text('See all')),
+                        SizedBox.shrink()
+                      ],
                     ),
-                  ),
-                ],
+                    Expanded(
+                      child: SafeArea(
+                        child: _bodyListViewBloc(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ));
       },
@@ -113,9 +128,12 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
           itemCount: state.books?.length ?? kZero.toInt(),
           itemBuilder: (BuildContext context, int index) => Column(
             children: [
-              Card(
-                child: BodyListCardWidget(
-                  model: state.books?[index],
+              Padding(
+                padding: PaddingItems.bottomNormal(),
+                child: Card(
+                  child: BodyListCardWidget(
+                    model: state.books?[index],
+                  ),
                 ),
               ),
             ],

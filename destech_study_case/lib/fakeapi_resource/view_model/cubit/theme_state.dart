@@ -3,12 +3,13 @@ part of 'theme_cubit.dart';
 class ThemeState extends Equatable{
 
   final ThemeData? currentTheme;
-  final bool? isLightTheme;
+  final bool isLightTheme;
 
-  ThemeState({this.currentTheme,this.isLightTheme = false});
+   ThemeState({this.currentTheme,this.isLightTheme = false});
 
   @override
   List<Object?> get props => [currentTheme,isLightTheme];
+
 
   ThemeState copyWith({
   ThemeData? currentTheme,
