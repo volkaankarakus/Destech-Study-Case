@@ -24,38 +24,43 @@ class _BodyListCardWidgetState extends State<BodyListCardWidget> {
   @override
   Widget build(BuildContext context) {
     if (widget.model == null) return SizedBox.shrink();
-        return ListTile(
-            leading: Container(
-                width: 80,
-                height: 80,
-                child: UtilityNetworkImage.network(src: widget.model?.image)),
-            title: Text('${widget.model?.title}'),
-            subtitle: Column(
+    return ListTile(
+      leading: Container(
+          width: 40,
+          height: 80,
+          child: UtilityNetworkImage.network(src: widget.model?.image)),
+      title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 12),
+            Text('${widget.model?.title}',style: Theme.of(context).textTheme.headline6,),
+            SizedBox(height: 10,),
+            Text('${widget.model?.author}',style: Theme.of(context).textTheme.subtitle2),
+            SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('${widget.model?.author}'),
-                Text('${widget.model?.genre}'),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text('${widget.model?.published}'),
-                  ],
-                ),
-
+                Text('${widget.model?.genre}',style: Theme.of(context).textTheme.caption),
+                Text('${widget.model?.published}',style: Theme.of(context).textTheme.caption),
               ],
-            ),
-            trailing: Container(
-              width: 40,
-              child: LikeButton(
-                isLiked: _isLiked,
-                size: 20,
-                animationDuration: DurationItems.durationNormal(),
-                onTap: (isLiked) async {
-                  this._isLiked = !isLiked;
-                  context.read<FakeApiCubit>().changeLikeButton(!isLiked);
-                  return !isLiked;
-                },
-              ),
-            ),
-          );
+            ),          ],
+        ),
+
+      //subtitle: ,
+      trailing: Container(
+        //color: Colors.amberAccent,
+        width: 40,
+        child: LikeButton(
+          isLiked: _isLiked,
+          size: 20,
+          animationDuration: DurationItems.durationNormal(),
+          onTap: (isLiked) async {
+            this._isLiked = !isLiked;
+            context.read<FakeApiCubit>().changeLikeButton(!isLiked);
+            return !isLiked;
+          },
+        ),
+      ),
+    );
   }
 }

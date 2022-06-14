@@ -6,6 +6,7 @@ import 'package:destech_study_case/product/constant/k_items.dart';
 import 'package:destech_study_case/product/constant/lottie_items.dart';
 import 'package:destech_study_case/product/constant/padding_items.dart';
 import 'package:destech_study_case/product/router/app_router.dart';
+import 'package:destech_study_case/product/theme/light_theme.dart';
 import 'package:destech_study_case/product/utility/utility_search_delegate.dart';
 import 'package:destech_study_case/product/widget/search_row_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,19 +40,7 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
       builder: (context, state) {
         return Scaffold(
             appBar: AppBar(
-              title: Row(
-                children: [
-                  Text('My',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline5
-                          ?.copyWith(fontWeight: FontWeight.w700)),
-                  Text(
-                    ' Books',
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ],
-              ),
+              //title: ,
               actions: [
                 _wrapWithCircularContainer(
                     IconButton(
@@ -95,15 +84,35 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(notificationSnackBar);
               },
-              child: Padding(
-                padding: PaddingItems.horizontalNormal(),
-                child: Column(
-                  children: [
-                    SearchRowWidget(),
-                    Expanded(
-                      child: bodyListViewBloc(),
-                    ),
-                  ],
+              child: SafeArea(
+                child: Padding(
+                  padding: PaddingItems.horizontalNormal(),
+                  child: Column(
+                    children: [
+                      Row(
+                          children: [
+                            Text('My',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline5
+                                    ?.copyWith(
+                                      color: LightColor().jacaranda,
+                                      fontWeight: FontWeight.w700)),
+                            Text(
+                              ' Books',
+                              style: Theme.of(context).textTheme.headline5?.copyWith(
+                                color: LightColor().jacaranda,
+                              ),
+                            ),
+                          ]),
+                      SizedBox(height: 20,),
+                      SearchRowWidget(),
+                      SizedBox(height: 10,),
+                      Expanded(
+                        child: bodyListViewBloc(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ));
@@ -137,7 +146,12 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                       AppRouterEnums.detailBook.withParaf,
                     );
                   },
-                  child: Card(
+                  child: Container(
+                    height: 150,
+                    decoration: BoxDecoration(
+                      color: LightColor().fuchsiaNebula,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     child: BodyListCardWidget(
                       model: state.books?[index],
                     ),

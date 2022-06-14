@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class LightTheme {
-  final _lightColor = _LightColor();
+  final _lightColor = LightColor();
 
   late ThemeData theme;
 
@@ -10,6 +10,7 @@ class LightTheme {
     theme = ThemeData(
         appBarTheme: const AppBarTheme(
           systemOverlayStyle: SystemUiOverlayStyle(
+            systemNavigationBarColor: Colors.white,
             statusBarColor: Colors.transparent
           ),
             color: Colors.transparent,
@@ -24,26 +25,41 @@ class LightTheme {
 
         colorScheme: const ColorScheme.light(),
 
+
+
         buttonTheme: ButtonThemeData(
           colorScheme: ColorScheme.light(
-            onPrimary: _LightColor().blueMenia,
+            onPrimary: LightColor().blueMenia,
           ),
         ),
+
 
         textTheme:
         ThemeData.light().textTheme.copyWith(
             subtitle1: TextStyle(
                 fontSize: 20,
-                color: _lightColor._textColor),
+                color: _lightColor.amour),
+          subtitle2: TextStyle(
+              fontSize: 18,
+              color: _lightColor.amour),
+          headline6: TextStyle(
+              fontSize: 24,
+              color: _lightColor.amour),
           headline5: TextStyle(
               fontSize: 28,
-              color: _lightColor._textColor),
+              color: _lightColor.amour),
+          caption: TextStyle(
+              fontSize: 14,
+              color: _lightColor.amour),
         ),
     );
   }
 }
 
-class _LightColor {
-  final Color _textColor = const Color.fromARGB(255, 37, 5, 5);
+class LightColor {
+  final Color jacaranda = const Color(0xFF1C021C);
+  final Color amour = const Color(0xFFFEFBFE);
   final Color blueMenia = const Color.fromARGB(95, 188, 248, 1);
+  final Color spandexGreen = const Color(0xFF32c43f);
+  final Color fuchsiaNebula = const Color(0xFF7724a3);
 }
