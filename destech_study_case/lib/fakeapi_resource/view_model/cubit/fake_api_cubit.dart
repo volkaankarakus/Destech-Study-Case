@@ -33,13 +33,12 @@ class FakeApiCubit extends Cubit<FakeApiState> {
   }
 
   void changeLoading(){
-    emit(state.copyWith(isLoading: !(state.isLoading ?? false) ));
+    emit(state.copyWith(isLoading: !(state.isLoading ?? false)));
   }
 
 
-
   void changeLikeButton(bool newValue){
-    emit(state.copyWith(isLiked: (newValue ?? false) ));
+    emit(state.copyWith(isLiked: (newValue ?? false)));
   }
 
 }

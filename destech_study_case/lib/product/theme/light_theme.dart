@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class LightTheme {
   final _lightColor = _LightColor();
@@ -8,10 +9,16 @@ class LightTheme {
   LightTheme() {
     theme = ThemeData(
         appBarTheme: const AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent
+          ),
+            color: Colors.transparent,
+            elevation: 0,
             titleTextStyle: TextStyle(color: Colors.white),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)))),
+            //shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)))
+            ),
 
-        scaffoldBackgroundColor: Colors.white70.withOpacity(0.9),
+         scaffoldBackgroundColor: Colors.grey[300],
 
         cardTheme: CardTheme(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
 
@@ -27,7 +34,12 @@ class LightTheme {
         ThemeData.light().textTheme.copyWith(
             subtitle1: TextStyle(
                 fontSize: 20,
-                color: _lightColor._textColor)));
+                color: _lightColor._textColor),
+          headline5: TextStyle(
+              fontSize: 28,
+              color: _lightColor._textColor),
+        ),
+    );
   }
 }
 

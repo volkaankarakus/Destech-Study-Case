@@ -6,6 +6,8 @@ import 'package:destech_study_case/product/constant/k_items.dart';
 import 'package:destech_study_case/product/constant/lottie_items.dart';
 import 'package:destech_study_case/product/constant/padding_items.dart';
 import 'package:destech_study_case/product/router/app_router.dart';
+import 'package:destech_study_case/product/utility/utility_search_delegate.dart';
+import 'package:destech_study_case/product/widget/search_row_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:destech_study_case/product/widget/body_list_card_widget.dart';
 import 'package:destech_study_case/product/widget/loading_center_widget.dart';
@@ -16,8 +18,6 @@ import 'package:lottie/lottie.dart';
 class HomeView extends StatefulWidget {
   HomeView({Key? key}) : super(key: key);
 
-
-
   @override
   State<HomeView> createState() => _HomeViewState();
 }
@@ -25,7 +25,6 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
   late AnimationController controller;
   bool isLight = true;
-
 
   @override
   void initState() {
@@ -40,15 +39,28 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
       builder: (context, state) {
         return Scaffold(
             appBar: AppBar(
-              centerTitle: true,
-              title: Text('Destech',
-                  style: GoogleFonts.oleoScript().copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 30)),
-              leading: _loadingCenterBloc(),
+              title: Row(
+                children: [
+                  Text('My',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5
+                          ?.copyWith(fontWeight: FontWeight.w700)),
+                  Text(
+                    ' Books',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                ],
+              ),
               actions: [
-                InkWell(
+                _wrapWithCircularContainer(
+                    IconButton(
+                    onPressed: () {
+                      //context.read<FakeApiCubit>().changeisClickedSearch();
+                    },
+                    icon: Icon(Icons.search)
+                )),
+                _wrapWithCircularContainer(InkWell(
                   onTap: () async {
                     await controller.animateTo(isLight ? 0.5 : 1);
                     isLight = !isLight;
@@ -61,8 +73,8 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                     repeat: false,
                     controller: controller,
                   ),
-                ),
-                IconButton(
+                ),),
+                _wrapWithCircularContainer(IconButton(
                     onPressed: () {
                       Navigator.of(context)
                           .pushNamed(AppRouterEnums.favoriteBook.withParaf);
@@ -70,7 +82,7 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                     icon: Icon(
                       Icons.favorite_border,
                       size: 32,
-                    )),
+                    )),),
               ],
             ),
             body: BlocListener<FakeApiCubit, FakeApiState>(
@@ -87,35 +99,9 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                 padding: PaddingItems.horizontalNormal(),
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          height: 40,
-                          width: 250,
-                          child: TextField(
-                            textCapitalization: TextCapitalization.none,
-                            //default lowercase
-                            onChanged: (value) {
-                              context.read<FakeApiCubit>().searchByTitle(value);
-                            },
-                            decoration: InputDecoration(
-                                hintText: 'Search with title',
-                                prefixIcon: Icon(Icons.search),
-                                border: OutlineInputBorder()),
-                            style: TextStyle(fontSize: 15, height: 3),
-                          ),
-                        ),
-                        InkWell(onTap: () {
-                          context.read<FakeApiCubit>().getAll();
-                        }, child: Text('See all')),
-                        SizedBox.shrink()
-                      ],
-                    ),
+                    SearchRowWidget(),
                     Expanded(
-                      child: SafeArea(
-                        child: bodyListViewBloc(),
-                      ),
+                      child: bodyListViewBloc(),
                     ),
                   ],
                 ),
@@ -125,9 +111,20 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
     );
   }
 
+  Widget _wrapWithCircularContainer(Widget? widget) {
+    return Container(
+                padding: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: Colors.grey[400],
+                  shape: BoxShape.circle
+                ),
+                child: widget,
+              );
+  }
+
   Widget bodyListViewBloc() {
     return BlocBuilder<FakeApiCubit, FakeApiState>(
-      builder: (context,state) {
+      builder: (context, state) {
         return ListView.builder(
           itemCount: state.books?.length ?? kZero.toInt(),
           itemBuilder: (BuildContext context, int index) => Column(
@@ -137,8 +134,8 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).pushNamed(
-                        AppRouterEnums.detailBook.withParaf,
-                        );
+                      AppRouterEnums.detailBook.withParaf,
+                    );
                   },
                   child: Card(
                     child: BodyListCardWidget(
@@ -153,6 +150,10 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
       },
     );
   }
+
+
+
+
 
   Widget _loadingCenterBloc() {
     return BlocSelector<FakeApiCubit, FakeApiState, bool>(
