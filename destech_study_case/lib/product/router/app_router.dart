@@ -28,7 +28,7 @@ class AppRouter {
             BlocProvider.value(
                 value: fakeApiCubit,),
             BlocProvider<ThemeCubit>(
-                create: (context) => ThemeCubit())
+                create: (_) => ThemeCubit())
           ],
           child: child,
           ),

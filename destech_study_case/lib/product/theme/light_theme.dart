@@ -61,5 +61,6 @@ class LightColor {
   final Color amour = const Color(0xFFFEFBFE);
   final Color blueMenia = const Color.fromARGB(95, 188, 248, 1);
   final Color spandexGreen = const Color(0xFF32c43f);
-  final Color fuchsiaNebula = const Color(0xFF7724a3);
+  final Color russianViolet = const Color(0xFF38164b);
+  final Color vanishing = const Color(0xFF36094e);
 }

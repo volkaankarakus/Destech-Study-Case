@@ -1,6 +1,5 @@
 import 'package:destech_study_case/fakeapi_resource/view_model/cubit/fake_api_cubit.dart';
 import 'package:destech_study_case/fakeapi_resource/view_model/cubit/theme_cubit.dart';
-import 'package:destech_study_case/fakeapi_resource/view_model/home_view_model.dart';
 import 'package:destech_study_case/product/constant/duration_items.dart';
 import 'package:destech_study_case/product/constant/k_items.dart';
 import 'package:destech_study_case/product/constant/lottie_items.dart';
@@ -23,7 +22,7 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
+class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   late AnimationController controller;
   bool isLight = true;
 
@@ -42,72 +41,85 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
             appBar: AppBar(
               //title: ,
               actions: [
+                _searchButton(),
                 _wrapWithCircularContainer(
-                    IconButton(
-                    onPressed: () {
-                      //context.read<FakeApiCubit>().changeisClickedSearch();
+                  InkWell(
+                    onTap: () async {
+                      await controller.animateTo(isLight ? 0.5 : 1);
+                      isLight = !isLight;
+                      Future.microtask(() {
+                        context.read<ThemeCubit>().toggleTheme();
+                      });
                     },
-                    icon: Icon(Icons.search)
-                )),
-                _wrapWithCircularContainer(InkWell(
-                  onTap: () async {
-                    await controller.animateTo(isLight ? 0.5 : 1);
-                    isLight = !isLight;
-                    Future.microtask(() {
-                      context.read<ThemeCubit>().changeTheme();
-                    });
-                  },
-                  child: Lottie.asset(
-                    LottieItems.themeChange.lottiePath,
-                    repeat: false,
-                    controller: controller,
+                    child: Lottie.asset(
+                      LottieItems.themeChange.lottiePath,
+                      repeat: false,
+                      controller: controller,
+                    ),
                   ),
-                ),),
-                _wrapWithCircularContainer(IconButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed(AppRouterEnums.favoriteBook.withParaf);
-                    },
-                    icon: Icon(
-                      Icons.favorite_border,
-                      size: 32,
-                    )),),
+                ),
+                Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: _wrapWithCircularContainer(IconButton(
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(AppRouterEnums.favoriteBook.withParaf);
+                          },
+                          icon: Icon(
+                            Icons.favorite_border,
+                            size: 32,
+                          )),),
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Colors.red,
+                        child: Text('1',style: Theme.of(context)
+                            .textTheme
+                            .caption
+                            ?.copyWith(
+                            color: LightColor().amour,
+                            fontWeight: FontWeight.w700
+                            ),),
+                      ),
+                    )
+
+                  ],
+                ),
+              SizedBox(width: 10,)
               ],
             ),
-            body: BlocListener<FakeApiCubit, FakeApiState>(
-              listener: (context, state) {
-                final notificationSnackBar = SnackBar(
-                    duration: Duration(seconds: 1),
-                    backgroundColor: Colors.red,
-                    content:
-                        Text('isLiked : ' + state.isLiked.toString() + ''));
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(notificationSnackBar);
-              },
-              child: SafeArea(
+            body: SafeArea(
                 child: Padding(
                   padding: PaddingItems.horizontalNormal(),
                   child: Column(
                     children: [
-                      Row(
-                          children: [
-                            Text('My',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline5
-                                    ?.copyWith(
-                                      color: LightColor().jacaranda,
-                                      fontWeight: FontWeight.w700)),
-                            Text(
-                              ' Books',
-                              style: Theme.of(context).textTheme.headline5?.copyWith(
-                                color: LightColor().jacaranda,
-                              ),
-                            ),
-                          ]),
-                      SizedBox(height: 20,),
-                      SearchRowWidget(),
-                      SizedBox(height: 10,),
+                      Row(children: [
+                        Text('My',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5
+                                ?.copyWith(
+                                    color: LightColor().jacaranda,
+                                    fontWeight: FontWeight.w700)),
+                        Text(
+                          ' Books',
+                          style:
+                              Theme.of(context).textTheme.headline5?.copyWith(
+                                    color: LightColor().jacaranda,
+                                  ),
+                        ),
+                      ]),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      _animatedSearchWidget(state),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Expanded(
                         child: bodyListViewBloc(),
                       ),
@@ -115,20 +127,37 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                   ),
                 ),
               ),
-            ));
+            );
       },
     );
   }
 
+  AnimatedCrossFade _animatedSearchWidget(FakeApiState state) {
+    return AnimatedCrossFade(
+      duration: DurationItems.durationSmall(),
+      crossFadeState: (state.isClickedSearchButton ?? false)
+          ? CrossFadeState.showSecond
+          : CrossFadeState.showFirst,
+      firstChild: Container(),
+      secondChild: SearchRowWidget(),
+    );
+  }
+
+  Widget _searchButton() {
+    return _wrapWithCircularContainer(IconButton(
+        onPressed: () {
+          context.read<FakeApiCubit>().changeClickedButton();
+        },
+        icon: Icon(Icons.search)));
+  }
+
   Widget _wrapWithCircularContainer(Widget? widget) {
     return Container(
-                padding: EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: Colors.grey[400],
-                  shape: BoxShape.circle
-                ),
-                child: widget,
-              );
+      padding: EdgeInsets.all(4),
+      decoration:
+          BoxDecoration(color: Colors.grey[400], shape: BoxShape.circle),
+      child: widget,
+    );
   }
 
   Widget bodyListViewBloc() {
@@ -142,6 +171,7 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                 padding: PaddingItems.bottomNormal(),
                 child: InkWell(
                   onTap: () {
+                    //context.read<FakeApiCubit>().addToDetail(state.books.indexOf(element));
                     Navigator.of(context).pushNamed(
                       AppRouterEnums.detailBook.withParaf,
                     );
@@ -149,7 +179,13 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
                   child: Container(
                     height: 150,
                     decoration: BoxDecoration(
-                      color: LightColor().fuchsiaNebula,
+                      gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            LightColor().russianViolet,
+                            LightColor().vanishing
+                          ]),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: BodyListCardWidget(
@@ -164,10 +200,6 @@ class _HomeViewState extends HomeViewModel with TickerProviderStateMixin {
       },
     );
   }
-
-
-
-
 
   Widget _loadingCenterBloc() {
     return BlocSelector<FakeApiCubit, FakeApiState, bool>(

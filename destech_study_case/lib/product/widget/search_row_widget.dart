@@ -1,4 +1,5 @@
 import 'package:destech_study_case/fakeapi_resource/view_model/cubit/fake_api_cubit.dart';
+import 'package:destech_study_case/product/theme/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,7 +36,12 @@ class _SearchRowWidgetState extends State<SearchRowWidget> {
             ),
             InkWell(onTap: () {
               context.read<FakeApiCubit>().getAll();
-            }, child: Text('See all')),
+              context.read<FakeApiCubit>().changeClickedButton();
+            }, child: Text('See all',style: Theme.of(context)
+                .textTheme
+                .caption
+                ?.copyWith(
+                color: LightColor().jacaranda))),
             SizedBox.shrink()
           ],
         );

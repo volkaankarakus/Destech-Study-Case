@@ -6,16 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:destech_study_case/product/router/app_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+
 void main() {
   runApp(
-      MultiBlocProvider(
-          providers: [
-            BlocProvider<FakeApiCubit>(
-                create: (context) => AppRouter().fakeApiCubit),
-            BlocProvider<ThemeCubit>(
-                create: (context) => ThemeCubit())
-          ],
-      child: MyApp()),
+    MultiBlocProvider(
+        providers: [
+          BlocProvider<FakeApiCubit>(
+              create: (context) => AppRouter().fakeApiCubit),
+          BlocProvider<ThemeCubit>(
+              create: (_) => ThemeCubit())
+        ],
+        child: MyApp()),
   );
 }
 
@@ -30,18 +31,19 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        //theme: context.read<ThemeCubit>().curTheme(),
-      theme: LightTheme().theme,
-        onUnknownRoute : (settings){
-          return MaterialPageRoute(builder: (context){
-            return LottieLoadingView();
-          });
-        },
-        onGenerateRoute: _appRouter.onGenerateRoute,
-        // Generate routes were used instead of global access.
-        //    (in terms of the development of the pages)
-      );
+          debugShowCheckedModeBanner: false,
+          theme: LightTheme().theme,
+          //theme: context.read<ThemeCubit>().toggleTheme(),
+          onUnknownRoute: (settings) {
+            return MaterialPageRoute(builder: (context) {
+              return LottieLoadingView();
+            });
+          },
+          onGenerateRoute: _appRouter.onGenerateRoute,
+          // Generate routes were used instead of global access.
+          //    (in terms of the development of the pages)
+        );
+
   }
 
   @override

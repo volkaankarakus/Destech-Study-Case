@@ -13,6 +13,7 @@ class FakeApiCubit extends Cubit<FakeApiState> {
   final IFakeApiService fakeApiService;
   List<Data> books = [];
   List<Data> favBooks = [];
+  Data detailedBook  = Data();
 
   Future<void> fetch() async{
     changeLoading();
@@ -30,6 +31,15 @@ class FakeApiCubit extends Cubit<FakeApiState> {
     final result = books.where((element) =>
         (element).title!.contains(data)).toList();
     emit(state.copyWith(books: result));
+  }
+
+  // void addToFavorite(index){
+  //   final result = favBooks.add(state.books![index] as Data) ;
+  //   emit(state.copyWith(favBooks: favBooks.add(state.books![index])));
+  // }
+
+  void changeClickedButton(){
+    emit(state.copyWith(isClickedSearchButton: !(state.isClickedSearchButton ?? false)));
   }
 
   void changeLoading(){

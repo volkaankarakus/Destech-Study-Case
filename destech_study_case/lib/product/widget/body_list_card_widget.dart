@@ -2,6 +2,7 @@ import 'package:destech_study_case/fakeapi_resource/model/book_model.dart';
 import 'package:destech_study_case/fakeapi_resource/view_model/cubit/fake_api_cubit.dart';
 import 'package:destech_study_case/product/constant/duration_items.dart';
 import 'package:destech_study_case/product/router/app_router.dart';
+import 'package:destech_study_case/product/theme/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../utility/utility_network_image.dart';
@@ -28,7 +29,10 @@ class _BodyListCardWidgetState extends State<BodyListCardWidget> {
       leading: Container(
           width: 40,
           height: 80,
-          child: UtilityNetworkImage.network(src: widget.model?.image)),
+          child: CircleAvatar(
+            backgroundColor: LightColor().amour,
+            radius: 100,
+              child: UtilityNetworkImage.network(src: widget.model?.image))),
       title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
