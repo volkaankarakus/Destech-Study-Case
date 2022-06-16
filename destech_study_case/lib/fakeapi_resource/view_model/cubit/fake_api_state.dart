@@ -1,10 +1,10 @@
 part of 'fake_api_cubit.dart';
 
 class FakeApiState extends Equatable {
-  FakeApiState({this.books,this.detailedBook,this.isClickedSearchButton,this.isUpdated = false,this.isLoading,this.favBooks,this.isLiked});
+  FakeApiState({this.books,this.selectedBook,this.isClickedSearchButton,this.isUpdated = false,this.isLoading,this.favBooks,this.isLiked});
   final List<Data>? books;
   final List<Data>? favBooks;
-  final Data? detailedBook;
+  final Data? selectedBook;
   final bool? isLiked;
   final bool? isLoading;
   final bool? isClickedSearchButton;
@@ -12,13 +12,13 @@ class FakeApiState extends Equatable {
 
 
   @override
-  List<Object?> get props => [books,detailedBook,isClickedSearchButton,isLoading,favBooks,isLiked,isUpdated]; // don't trigger the page unless these values change
+  List<Object?> get props => [books,selectedBook,isClickedSearchButton,isLoading,favBooks,isLiked,isUpdated]; // don't trigger the page unless these values change
 
 
   //copyWith to update
   FakeApiState copyWith({
     List<Data>? books,
-    Data? detailedBook,
+    Data? selectedBook,
     List<Data>? favBooks,
     bool? isLoading,
     bool? isLiked,
@@ -27,7 +27,7 @@ class FakeApiState extends Equatable {
   }){
     return FakeApiState(
       books :books ?? this.books,
-      detailedBook: detailedBook ?? this.detailedBook,
+        selectedBook: selectedBook ?? this.selectedBook,
       favBooks: favBooks ?? this.favBooks,
       isLoading : isLoading ?? this.isLoading,
       isLiked: isLiked ?? false,

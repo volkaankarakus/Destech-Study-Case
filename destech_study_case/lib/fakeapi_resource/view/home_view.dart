@@ -1,3 +1,4 @@
+import 'package:destech_study_case/fakeapi_resource/model/book_model.dart';
 import 'package:destech_study_case/fakeapi_resource/view_model/cubit/fake_api_cubit.dart';
 import 'package:destech_study_case/fakeapi_resource/view_model/cubit/theme_cubit.dart';
 import 'package:destech_study_case/product/constant/duration_items.dart';
@@ -17,6 +18,8 @@ import 'package:lottie/lottie.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key? key}) : super(key: key);
+  // HomeView({Key? key,this.clickedBook}) : super(key: key);
+
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -25,13 +28,30 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   late AnimationController controller;
   bool isLight = true;
+  late Data? _clickedBook;
 
   @override
   void initState() {
     super.initState();
+    //_clickedBook = widget.clickedBook;
     controller = AnimationController(
         vsync: this, duration: DurationItems.durationXHigh());
   }
+
+  // @override
+  // void didUpdateWidget(covariant HomeView oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   if(widget.clickedBook != oldWidget.clickedBook){
+  //     _updateBook();
+  //   }
+  // }
+
+  // void _updateBook(){
+  //   setState((){
+  //     _clickedBook = widget.clickedBook;
+  //   });
+  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +59,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       builder: (context, state) {
         return Scaffold(
             appBar: AppBar(
-              //title: ,
               actions: [
                 _searchButton(),
                 _wrapWithCircularContainer(
@@ -48,7 +67,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                       await controller.animateTo(isLight ? 0.5 : 1);
                       isLight = !isLight;
                       Future.microtask(() {
-                        context.read<ThemeCubit>().toggleTheme();
+                        context.read<ThemeCubit>().changeTheme();
                       });
                     },
                     child: Lottie.asset(
@@ -169,9 +188,11 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             children: [
               Padding(
                 padding: PaddingItems.bottomNormal(),
-                child: InkWell(
-                  onTap: () {
-                    //context.read<FakeApiCubit>().addToDetail(state.books.indexOf(element));
+                child: TextButton(
+                  onPressed: (){
+                    //_clickedBook = state.books![index];
+                     //context.read<FakeApiCubit>().selectBook(state.books![index]);
+
                     Navigator.of(context).pushNamed(
                       AppRouterEnums.detailBook.withParaf,
                     );

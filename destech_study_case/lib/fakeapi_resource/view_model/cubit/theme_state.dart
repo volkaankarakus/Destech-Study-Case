@@ -1,21 +1,22 @@
 part of 'theme_cubit.dart';
 
 class ThemeState extends Equatable{
+  bool? isLightTheme;
+  ThemeState({this.isLightTheme});
 
-  final bool isLightTheme;
+  ThemeData get currentTheme => (isLightTheme ?? false) ? LightTheme().theme : DarkTheme().theme;
 
-   ThemeState({this.isLightTheme = false});
 
   @override
   List<Object?> get props => [isLightTheme];
 
-  ThemeData? get currentTheme => !isLightTheme ? LightTheme().theme : DarkTheme().theme;
-
   ThemeState copyWith({
-  bool? isLightTheme
+  bool? isLightTheme,
 }){
     return ThemeState(
-      isLightTheme : isLightTheme ?? this.isLightTheme
+      isLightTheme: isLightTheme ?? this.isLightTheme,
     );
   }
+
+
 }

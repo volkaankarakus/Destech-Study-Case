@@ -7,9 +7,9 @@ import 'package:destech_study_case/product/widget/body_list_card_widget.dart';
 import 'package:flutter/material.dart';
 
 class DetailBookView extends StatefulWidget {
-  DetailBookView({Key? key,this.model}) : super(key: key);
+  DetailBookView({Key? key, this.model}) : super(key: key);
 
-  final Data? model;
+  Data? model;
 
   @override
   State<DetailBookView> createState() => _DetailBookViewState();

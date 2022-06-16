@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 
 part 'theme_state.dart';
 
-class ThemeCubit extends Cubit<ThemeState> {
-  ThemeCubit() : super(ThemeState());
+class ThemeCubit extends Cubit<ThemeState>{
+  ThemeCubit() : super(ThemeState(isLightTheme: true));
 
-  void toggleTheme(){
+  changeTheme(){
     emit(state.copyWith(isLightTheme: !(state.isLightTheme ?? false)));
   }
+
 }

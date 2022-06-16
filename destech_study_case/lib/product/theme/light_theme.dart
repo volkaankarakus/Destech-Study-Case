@@ -10,8 +10,11 @@ class LightTheme {
     theme = ThemeData(
         appBarTheme: const AppBarTheme(
           systemOverlayStyle: SystemUiOverlayStyle(
-            systemNavigationBarColor: Colors.white,
-            statusBarColor: Colors.transparent
+
+            systemNavigationBarIconBrightness: Brightness.light,
+            systemNavigationBarDividerColor: Colors.transparent,
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.light,
           ),
             color: Colors.transparent,
             elevation: 0,

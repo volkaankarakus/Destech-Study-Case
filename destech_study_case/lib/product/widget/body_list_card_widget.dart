@@ -50,9 +50,7 @@ class _BodyListCardWidgetState extends State<BodyListCardWidget> {
             ),          ],
         ),
 
-      //subtitle: ,
       trailing: Container(
-        //color: Colors.amberAccent,
         width: 40,
         child: LikeButton(
           isLiked: _isLiked,

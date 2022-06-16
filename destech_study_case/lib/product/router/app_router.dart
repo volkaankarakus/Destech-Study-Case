@@ -22,13 +22,13 @@ class AppRouter {
   static const paraf = "/";
 
   Route<dynamic> _navigateToWidget(Widget child){
-    return MaterialPageRoute(builder: (_) =>
+    return MaterialPageRoute(builder: (context) =>
         MultiBlocProvider(
           providers: [
             BlocProvider.value(
                 value: fakeApiCubit,),
             BlocProvider<ThemeCubit>(
-                create: (_) => ThemeCubit())
+                create: (context) => ThemeCubit())
           ],
           child: child,
           ),
@@ -53,7 +53,10 @@ class AppRouter {
           return _navigateToWidget(HomeView());
 
         case AppRouterEnums.detailBook:
+          //final args = routeSettings.arguments as HomeView;
+          //return _navigateToWidget(DetailBookView(model: args.clickedBook));
           return _navigateToWidget(DetailBookView());
+
 
         case AppRouterEnums.favoriteBook:
           return _navigateToWidget(FavoriteBooksView());
