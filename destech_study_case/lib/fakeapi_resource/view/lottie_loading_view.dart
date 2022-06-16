@@ -36,6 +36,7 @@ class _LottieLoadingViewState extends State<LottieLoadingView>
     return BlocBuilder<FakeApiCubit, FakeApiState>(
       builder: (context, state) {
         return Scaffold(
+          appBar: AppBar(),
           body: Center(
             child: Lottie.asset(LottieItems.loadingLight.lottiePath),
           ),

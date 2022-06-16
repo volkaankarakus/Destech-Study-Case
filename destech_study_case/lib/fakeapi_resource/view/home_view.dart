@@ -7,7 +7,6 @@ import 'package:destech_study_case/product/constant/lottie_items.dart';
 import 'package:destech_study_case/product/constant/padding_items.dart';
 import 'package:destech_study_case/product/router/app_router.dart';
 import 'package:destech_study_case/product/theme/light_theme.dart';
-import 'package:destech_study_case/product/utility/utility_search_delegate.dart';
 import 'package:destech_study_case/product/widget/search_row_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:destech_study_case/product/widget/body_list_card_widget.dart';
@@ -18,7 +17,6 @@ import 'package:lottie/lottie.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key? key}) : super(key: key);
-  // HomeView({Key? key,this.clickedBook}) : super(key: key);
 
 
   @override
@@ -28,29 +26,13 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   late AnimationController controller;
   bool isLight = true;
-  late Data? _clickedBook;
 
   @override
   void initState() {
     super.initState();
-    //_clickedBook = widget.clickedBook;
     controller = AnimationController(
         vsync: this, duration: DurationItems.durationXHigh());
   }
-
-  // @override
-  // void didUpdateWidget(covariant HomeView oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-  //   if(widget.clickedBook != oldWidget.clickedBook){
-  //     _updateBook();
-  //   }
-  // }
-
-  // void _updateBook(){
-  //   setState((){
-  //     _clickedBook = widget.clickedBook;
-  //   });
-  // }
 
 
   @override
@@ -61,94 +43,104 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             appBar: AppBar(
               actions: [
                 _searchButton(),
-                _wrapWithCircularContainer(
-                  InkWell(
-                    onTap: () async {
-                      await controller.animateTo(isLight ? 0.5 : 1);
-                      isLight = !isLight;
-                      Future.microtask(() {
-                        context.read<ThemeCubit>().changeTheme();
-                      });
-                    },
-                    child: Lottie.asset(
-                      LottieItems.themeChange.lottiePath,
-                      repeat: false,
-                      controller: controller,
-                    ),
-                  ),
-                ),
-                Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: _wrapWithCircularContainer(IconButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(AppRouterEnums.favoriteBook.withParaf);
-                          },
-                          icon: Icon(
-                            Icons.favorite_border,
-                            size: 32,
-                          )),),
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: CircleAvatar(
-                        radius: 10,
-                        backgroundColor: Colors.red,
-                        child: Text('1',style: Theme.of(context)
-                            .textTheme
-                            .caption
-                            ?.copyWith(
-                            color: LightColor().amour,
-                            fontWeight: FontWeight.w700
-                            ),),
-                      ),
-                    )
-
+                SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+                _themeChangeButton(context),
+                SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+                _goToFavListButton(context),
+                SizedBox(width: MediaQuery.of(context).size.width * 0.05)
                   ],
-                ),
-              SizedBox(width: 10,)
-              ],
             ),
-            body: SafeArea(
-                child: Padding(
-                  padding: PaddingItems.horizontalNormal(),
-                  child: Column(
-                    children: [
-                      Row(children: [
-                        Text('My',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline5
-                                ?.copyWith(
-                                    color: LightColor().jacaranda,
-                                    fontWeight: FontWeight.w700)),
-                        Text(
-                          ' Books',
-                          style:
-                              Theme.of(context).textTheme.headline5?.copyWith(
-                                    color: LightColor().jacaranda,
-                                  ),
-                        ),
-                      ]),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      _animatedSearchWidget(state),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Expanded(
-                        child: bodyListViewBloc(),
-                      ),
-                    ],
+            body: _homeViewBody(context, state),
+        );},);}
+
+  Widget _homeViewBody(BuildContext context, FakeApiState state) {
+    return SafeArea(
+              child: Padding(
+                padding: PaddingItems.horizontalNormal(),
+                child: Column(
+                  children: [
+                    _myBooksRow(context),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    _animatedSearchWidget(state),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    Expanded(child: bodyListViewBloc(),
+                    ),
+                  ],),),);
+  }
+
+
+
+
+  Widget _themeChangeButton(BuildContext context)  {
+    return _wrapWithCircularContainer(
+                InkWell(
+                  onTap: () async {
+                    await controller.animateTo(isLight ? 0.5 : 1);
+                    isLight = !isLight;
+                    Future.microtask(() {
+                      context.read<ThemeCubit>().changeTheme();
+                    });
+                  },
+                  child: Lottie.asset(
+                    LottieItems.themeChange.lottiePath,
+                    repeat: false,
+                    controller: controller,
                   ),
                 ),
-              ),
-            );
-      },
-    );
+              );
+  }
+
+  Widget _myBooksRow(BuildContext context) {
+    return Row(children: [
+                      Text('My',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline5
+                              ?.copyWith(
+                                  color: LightColor().jacaranda,
+                                  fontWeight: FontWeight.w700)),
+                      Text(
+                        ' Books',
+                        style:
+                            Theme.of(context).textTheme.headline5?.copyWith(
+                                  color: LightColor().jacaranda,
+                                ),
+                      ),
+                    ]);
+  }
+
+  Widget _goToFavListButton(BuildContext context) {
+    return Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: _wrapWithCircularContainer(IconButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(AppRouterEnums.favoriteBook.withParaf);
+                        },
+                        icon: Icon(
+                          Icons.favorite_border,
+                          size: 32,
+                        )),),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: CircleAvatar(
+                      radius: 10,
+                      backgroundColor: Colors.red,
+                      child: Text('0',style: Theme.of(context)
+                          .textTheme
+                          .caption
+                          ?.copyWith(
+                          color: LightColor().amour,
+                          fontWeight: FontWeight.w700
+                          ),),
+                    ),
+                  )
+
+                ],
+              );
   }
 
   Widget _animatedSearchWidget(FakeApiState state) {
@@ -191,10 +183,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                 child: TextButton(
                   onPressed: (){
                     context.read<FakeApiCubit>().selectBook(state.books![index]);
-
                     Navigator.of(context).pushNamed(
                       AppRouterEnums.detailBook.withParaf,
-                      arguments: state.selectedBook
                     );
                   },
                   child: Container(
