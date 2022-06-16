@@ -53,8 +53,6 @@ class AppRouter {
           return _navigateToWidget(HomeView());
 
         case AppRouterEnums.detailBook:
-          //final args = routeSettings.arguments as HomeView;
-          //return _navigateToWidget(DetailBookView(model: args.clickedBook));
           return _navigateToWidget(DetailBookView());
 
 

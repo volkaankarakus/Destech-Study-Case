@@ -35,7 +35,6 @@ class FakeApiCubit extends Cubit<FakeApiState> {
 
   void selectBook(Data model){
     emit(state.copyWith(selectedBook: model));
-
   }
 
 

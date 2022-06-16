@@ -151,7 +151,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     );
   }
 
-  AnimatedCrossFade _animatedSearchWidget(FakeApiState state) {
+  Widget _animatedSearchWidget(FakeApiState state) {
     return AnimatedCrossFade(
       duration: DurationItems.durationSmall(),
       crossFadeState: (state.isClickedSearchButton ?? false)
@@ -190,11 +190,11 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                 padding: PaddingItems.bottomNormal(),
                 child: TextButton(
                   onPressed: (){
-                    //_clickedBook = state.books![index];
-                     //context.read<FakeApiCubit>().selectBook(state.books![index]);
+                    context.read<FakeApiCubit>().selectBook(state.books![index]);
 
                     Navigator.of(context).pushNamed(
                       AppRouterEnums.detailBook.withParaf,
+                      arguments: state.selectedBook
                     );
                   },
                   child: Container(
